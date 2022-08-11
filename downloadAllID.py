@@ -6,7 +6,6 @@ url_playlist = 'https://www.youtube.com/watch?v=vPLypZwpJ-M&list=PL7MUR3BzAAjXkL
 playlist = Playlist(url_playlist)
 listUrl = playlist.video_urls
 
-
 for i in range(0,len(listUrl)):
     yt = YouTube(listUrl[i])
     video = yt.streams.get_highest_resolution()
@@ -16,4 +15,4 @@ for i in range(0,len(listUrl)):
     title = str(i) + '-' + video.title
     print("------------------ > : ",title)
     video.download(title)
-    break
+    # break
