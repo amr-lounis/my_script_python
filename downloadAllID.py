@@ -1,19 +1,19 @@
-import requests
-import os
-import urllib.request
+from pytube import Playlist ,YouTube
+import re
 
-headers = {
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:95.0) Gecko/20100101 Firefox/95.0",
-}
+url_playlist = 'https://www.youtube.com/watch?v=vPLypZwpJ-M&list=PL7MUR3BzAAjXkLxktMSYUa4Y98N5OQRZz'
 
-for i in range(3900,5463):
-    try:
-        url = f"https://www.midiworld.com/download/{i}"
-        r = requests.get(url, headers=headers)
-        filename = os.path.join('downloaded', r.headers["Content-disposition"].split("=", -1)[-1])
-        print(f"{i} --> {filename} ")
-        if not os.path.isfile(filename):
-            urllib.request.urlretrieve(url, filename)
-    except:
-      print(f"Error in : {i}")
-      break
+playlist = Playlist(url_playlist)
+listUrl = playlist.video_urls
+
+
+for i in range(0,len(listUrl)):
+    yt = YouTube(listUrl[i])
+    video = yt.streams.get_highest_resolution()
+    # video =   yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc() .first()
+    video =   yt.streams.filter(progressive=True, file_extension='mp4',res="360p").first()
+    # res= 360p / 720p / 144 
+    title = str(i) + '-' + video.title
+    print("------------------ > : ",title)
+    video.download(title)
+    break
